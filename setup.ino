@@ -39,7 +39,7 @@ void loop(){
   Serial.println(F(""));
   Serial.println(F("==================================================="));
   Serial.println(F("System check"));
-  Serial.println(F("INDIAN LIFEHACKER"));
+  Serial.println(F("Aeromodelling Club IITI"));
   delay(1000);
   Serial.println(F("Checking I2C clock speed."));
   delay(1000);
@@ -261,7 +261,7 @@ void loop(){
     }
   }
   
-  //If the gyro is found we can setup the correct gyro axes.
+  //If the gyro is found, we can set the correct gyro axes.
   if(error == 0){
     delay(3000);
     Serial.println(F(""));
@@ -281,7 +281,7 @@ void loop(){
       gyro_yaw_cal += gyro_yaw;                                  //Ad yaw value to gyro_yaw_cal.
       delay(4);                                                  //Wait 3 milliseconds before the next loop.
     }
-    //Now that we have 2000 measures, we need to devide by 2000 to get the average gyro offset.
+    //Now that we have 2000 measures, we need to divide by 2000 to get the average gyro offset.
     gyro_roll_cal /= 2000;                                       //Divide the roll total by 2000.
     gyro_pitch_cal /= 2000;                                      //Divide the pitch total by 2000.
     gyro_yaw_cal /= 2000;                                        //Divide the yaw total by 2000.
@@ -433,7 +433,7 @@ void loop(){
     EEPROM.write(35, 'B');
         
     
-    //To make sure evrything is ok, verify the EEPROM data.
+    //To make sure everything is ok, verify the EEPROM data.
     Serial.println(F("Verify EEPROM data"));
     delay(1000);
     if(center_channel_1 != ((EEPROM.read(1) << 8) | EEPROM.read(0)))error = 1;
@@ -504,8 +504,8 @@ void start_gyro(){
     Wire.write(0x0F);                                            //Set the register bits as 00001111 (Turn on the gyro and enable all axis)
     Wire.endTransmission();                                      //End the transmission with the gyro
 
-    Wire.beginTransmission(address);                             //Start communication with the gyro (adress 1101001)
-    Wire.write(0x20);                                            //Start reading @ register 28h and auto increment with every read
+    Wire.beginTransmission(address);                             //Start communication with the gyro (address 1101001)
+    Wire.write(0x20);                                            //Start reading @ register 28h and auto-increment with every read
     Wire.endTransmission();                                      //End the transmission
     Wire.requestFrom(address, 1);                                //Request 6 bytes from the gyro
     while(Wire.available() < 1);                                 //Wait until the 1 byte is received
@@ -517,8 +517,8 @@ void start_gyro(){
     Wire.write(0x90);                                            //Set the register bits as 10010000 (Block Data Update active & 500dps full scale)
     Wire.endTransmission();                                      //End the transmission with the gyro
     
-    Wire.beginTransmission(address);                             //Start communication with the gyro (adress 1101001)
-    Wire.write(0x23);                                            //Start reading @ register 28h and auto increment with every read
+    Wire.beginTransmission(address);                             //Start communication with the gyro (address 1101001)
+    Wire.write(0x23);                                            //Start reading @ register 28h and auto-increment with every read
     Wire.endTransmission();                                      //End the transmission
     Wire.requestFrom(address, 1);                                //Request 6 bytes from the gyro
     while(Wire.available() < 1);                                 //Wait until the 1 byte is received
@@ -547,8 +547,8 @@ void start_gyro(){
     Wire.write(0x08);                                            //Set the register bits as 00001000 (500dps full scale)
     Wire.endTransmission();                                      //End the transmission
     
-    Wire.beginTransmission(address);                             //Start communication with the gyro (adress 1101001)
-    Wire.write(0x1B);                                            //Start reading @ register 28h and auto increment with every read
+    Wire.beginTransmission(address);                             //Start communication with the gyro (address 1101001)
+    Wire.write(0x1B);                                            //Start reading @ register 28h and auto-increment with every read
     Wire.endTransmission();                                      //End the transmission
     Wire.requestFrom(address, 1);                                //Request 1 bytes from the gyro
     while(Wire.available() < 1);                                 //Wait until the 1 byte is received
@@ -561,21 +561,21 @@ void start_gyro(){
 void gyro_signalen(){
   if(type == 2 || type == 3){
     Wire.beginTransmission(address);                             //Start communication with the gyro
-    Wire.write(168);                                             //Start reading @ register 28h and auto increment with every read
+    Wire.write(168);                                             //Start reading @ register 28h and auto-increment with every read
     Wire.endTransmission();                                      //End the transmission
     Wire.requestFrom(address, 6);                                //Request 6 bytes from the gyro
     while(Wire.available() < 6);                                 //Wait until the 6 bytes are received
     lowByte = Wire.read();                                       //First received byte is the low part of the angular data
     highByte = Wire.read();                                      //Second received byte is the high part of the angular data
-    gyro_roll = ((highByte<<8)|lowByte);                         //Multiply highByte by 256 (shift left by 8) and ad lowByte
+    gyro_roll = ((highByte<<8)|lowByte);                         //Multiply highByte by 256 (shift left by 8) and ad low byte
     if(cal_int == 2000)gyro_roll -= gyro_roll_cal;               //Only compensate after the calibration
     lowByte = Wire.read();                                       //First received byte is the low part of the angular data
     highByte = Wire.read();                                      //Second received byte is the high part of the angular data
-    gyro_pitch = ((highByte<<8)|lowByte);                        //Multiply highByte by 256 (shift left by 8) and ad lowByte
+    gyro_pitch = ((highByte<<8)|lowByte);                        //Multiply highByte by 256 (shift left by 8) and ad low byte
     if(cal_int == 2000)gyro_pitch -= gyro_pitch_cal;             //Only compensate after the calibration
     lowByte = Wire.read();                                       //First received byte is the low part of the angular data
     highByte = Wire.read();                                      //Second received byte is the high part of the angular data
-    gyro_yaw = ((highByte<<8)|lowByte);                          //Multiply highByte by 256 (shift left by 8) and ad lowByte
+    gyro_yaw = ((highByte<<8)|lowByte);                          //Multiply highByte by 256 (shift left by 8) and ad low byte
     if(cal_int == 2000)gyro_yaw -= gyro_yaw_cal;                 //Only compensate after the calibration
   }
   if(type == 1){
@@ -745,7 +745,7 @@ void check_gyro_axes(byte movement){
     
     delayMicroseconds(3700); //Loop is running @ 250Hz. +/-300us is used for communication with the gyro
   }
-  //Assign the moved axis to the orresponding function (pitch, roll, yaw)
+  //Assign the moved axis to the corresponding function (pitch, roll, yaw)
   if((gyro_angle_roll < -30 || gyro_angle_roll > 30) && gyro_angle_pitch > -30 && gyro_angle_pitch < 30 && gyro_angle_yaw > -30 && gyro_angle_yaw < 30){
     gyro_check_byte |= 0b00000001;
     if(gyro_angle_roll < 0)trigger_axis = 0b10000001;
@@ -830,7 +830,7 @@ void intro(){
   Serial.println(F(""));
   Serial.println(F(""));
   delay(500);
-  Serial.println(F("  Indian LifeHacker"));
+  Serial.println(F("Aeromodelling Club IITI"));
   delay(500);
   Serial.println(F("    Flight"));
   delay(500);
@@ -840,8 +840,5 @@ void intro(){
   Serial.println(F("Setup Program"));
   Serial.println(F(""));
   Serial.println(F("==================================================="));
-  delay(1500);
-  Serial.println(F("For support and questions: indianlifehacker@gmail.com"));
-  Serial.println(F(""));
-  Serial.println(F("Have fun!"));
+  
 }
